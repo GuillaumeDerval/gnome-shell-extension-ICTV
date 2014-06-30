@@ -4,7 +4,8 @@ const Tweener = imports.ui.tweener;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Mainloop = imports.mainloop;
-const ICTVPath = "/home/gderval/Desktop/ICTV/";
+const GLib = imports.gi.GLib;
+const ICTVPath = "/usr/share/ICTV/";
 const UpdateDelay = 10;
 const TransitionTime = 2.0;
 
@@ -96,6 +97,7 @@ function enable()
     if (_backgroundGroup == null)
     {
         let desktopActor = global.window_group.get_children();
+                let i = 0;
         for(i=0;i<desktopActor.length;i++)
         {
             if(desktopActor[i] instanceof Meta.BackgroundGroup)
@@ -105,16 +107,24 @@ function enable()
         }
     }
 
+    let isGDM = GLib.get_user_name() == "gdm" || GLib.get_user_name() == "root";
+
     if (!imageWidget1)
     {
         imageWidget1 = new St.Widget({style_class: 'ictv-image'});
+    if(!isGDM)
         _backgroundGroup.add_actor(imageWidget1);
+    else
+        global.stage.add_actor(imageWidget1);
     }
 
     if (!imageWidget2)
     {
         imageWidget2 = new St.Widget({style_class: 'ictv-image'});
+        if(!isGDM)
         _backgroundGroup.add_actor(imageWidget2);
+    else
+        global.stage.add_actor(imageWidget2);
     }
 
     imageWidget1.opacity = 255;
