@@ -33,9 +33,7 @@ function getNextImage()
     if(imageList.length <= currentImage)
         currentImage = 0;
     if(imageList[currentImage] == "")
-    {
         return getNextImage();
-    }
 
     return ICTVPath+imageList[currentImage];
 }
@@ -46,8 +44,10 @@ function endUpdateImage()
     if(!active)
         return;
     let ni = getNextImage();
+    
     if(ni == "")
         return;
+    
     if(activeImageWidget == 1)
         imageWidget2.set_style("background-image:url('"+ni+"');");
     else
@@ -97,14 +97,10 @@ function enable()
     if (_backgroundGroup == null)
     {
         let desktopActor = global.window_group.get_children();
-                let i = 0;
+        let i = 0;
         for(i=0;i<desktopActor.length;i++)
-        {
             if(desktopActor[i] instanceof Meta.BackgroundGroup)
-            {
                 _backgroundGroup = desktopActor[i];
-            }
-        }
     }
 
     let isGDM = GLib.get_user_name() == "gdm" || GLib.get_user_name() == "root";
@@ -112,19 +108,19 @@ function enable()
     if (!imageWidget1)
     {
         imageWidget1 = new St.Widget({style_class: 'ictv-image'});
-    if(!isGDM)
-        _backgroundGroup.add_actor(imageWidget1);
-    else
-        global.stage.add_actor(imageWidget1);
+        if(!isGDM)
+            _backgroundGroup.add_actor(imageWidget1);
+        else
+            global.stage.add_actor(imageWidget1);
     }
 
     if (!imageWidget2)
     {
         imageWidget2 = new St.Widget({style_class: 'ictv-image'});
         if(!isGDM)
-        _backgroundGroup.add_actor(imageWidget2);
-    else
-        global.stage.add_actor(imageWidget2);
+            _backgroundGroup.add_actor(imageWidget2);
+        else
+            global.stage.add_actor(imageWidget2);
     }
 
     imageWidget1.opacity = 255;
